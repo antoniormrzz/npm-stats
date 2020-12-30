@@ -1,0 +1,7 @@
+{
+  "name": "npm-stats",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
