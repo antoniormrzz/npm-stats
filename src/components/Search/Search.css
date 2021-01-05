@@ -1,0 +1,16 @@
+.search__row{
+  display: flex;
+  padding: 0 6px;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+.search__button{
+  margin-left: 8px;
+}
+
+.search__select{
+  border: 2px solid grey;
+  border-radius: 10px;
+  width: calc(50% - 5px);
+}
