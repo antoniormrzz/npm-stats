@@ -1,0 +1,11 @@
+.single-package-chart{
+  width: 100%;
+  padding: 10px;
+  height: 300px;
+}
+
+@media  only screen and (max-width: 600px) {
+  .single-package-chart{
+    display: none;
+  }
+}

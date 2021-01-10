@@ -2,7 +2,7 @@ import { IonButton, IonCard, IonInput, IonSelect, IonSelectOption } from '@ionic
 import React, { useState } from 'react';
 import './Search.css';
 
-const Search: React.FC = () => {
+const Search: React.FC<{ onSearch }> = ({ onSearch }) => {
   const [text, setText] = useState<string>('');
   const [placeholder, setPlaceholder] = useState<string>('Search User');
   const [searchType, setSearchType] = useState<string>('user');
@@ -10,7 +10,7 @@ const Search: React.FC = () => {
 
   return (
     <div className="search">
-      <IonCard color={'dark'}>
+      <IonCard >
         <div className="search__row">
           <IonInput
             value={text}
@@ -20,7 +20,7 @@ const Search: React.FC = () => {
           <IonButton
             className="search__button"
             color="primary"
-            onClick={e => console.log('clicked')}
+            onClick={e => onSearch(text, searchType, searchTime)}
           >
             Search
           </IonButton>
