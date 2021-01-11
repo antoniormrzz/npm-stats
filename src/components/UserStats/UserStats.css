@@ -1,0 +1,25 @@
+.search__select__full{
+  border: 2px solid grey;
+  border-radius: 10px;
+  width: calc(100% - 10px);
+  margin: 5px;
+}
+
+.package-stats-list{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.package-stats-list > .package-stats-wrapper{
+  width: 50%;
+  min-width: 50%;
+}
+
+@media  only screen and (max-width: 600px) {
+  .package-stats-list > .package-stats-wrapper{
+    width: 100%;
+    min-width: 100%;
+  }
+}

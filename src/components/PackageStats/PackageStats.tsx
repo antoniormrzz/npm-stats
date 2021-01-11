@@ -1,14 +1,10 @@
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonInput,
   IonProgressBar,
-  IonSelect,
-  IonSelectOption,
   IonSkeletonText
 } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
@@ -31,12 +27,11 @@ const PackageStats = ({ packageName, period }) => {
       .then(data => {
         setLoaded(true);
         setPackageData(data);
-        console.log(data);
       });
   }, [packageName, period]);
 
   return (
-    <div>
+    <div className={'package-stats-wrapper'}>
       <IonCard>
         {loaded ? (
           <div className={'single-package-chart'}>
