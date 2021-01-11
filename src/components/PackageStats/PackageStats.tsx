@@ -8,7 +8,7 @@ import {
   IonSkeletonText
 } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryTooltip } from 'victory';
+import { VictoryBar, VictoryChart, VictoryTooltip } from 'victory';
 import handleErrors from '../../utils/handleFetchErrors';
 import { theme } from '../../utils/victoryTheme';
 import './PackageStats.css';

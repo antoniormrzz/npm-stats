@@ -25,6 +25,7 @@ const Search: React.FC<{ onSearch }> = ({ onSearch }) => {
 
   useEffect(() => {
     timeChangeHander();
+    // eslint-disable-next-line
   }, [searchTime]);
 
   return (
