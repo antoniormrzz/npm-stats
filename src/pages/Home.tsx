@@ -1,5 +1,5 @@
-import { IonAlert, IonContent, IonPage } from '@ionic/react';
-import React, { useCallback, useState } from 'react';
+import { IonAlert, IonContent, IonPage, IonText } from '@ionic/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PackageStats from '../components/PackageStats/PackageStats';
 import Search from '../components/Search/Search';
 import UserStats from '../components/UserStats/UserStats';
@@ -11,6 +11,14 @@ const Home: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState(
     'Something went considerably wrong, I swear it worked on my machine! :('
   );
+  const [visits, setVisits] = useState(0);
+
+  useEffect(() => {
+    fetch('https://api.countapi.xyz/hit/npmstatsrmrzz/visits')
+      .then(r => r.json())
+      .then(r => setVisits(r.value))
+      .catch(e => {});
+  }, []);
 
   const searchHandler = useCallback((q: string, type: string, period: string) => {
     setQuery({ q, t: type, p: period });
@@ -31,6 +39,13 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
+        <IonText style={{ padding: '15px' }}>
+          npm stats by{' '}
+          <a target="_blank" rel="noreferrer" href="https://github.com/antoniormrzz">
+            antoniormrzz
+          </a>
+          {visits ? `, visits: ${visits}` : null}
+        </IonText>
         <Search onSearch={searchHandler} />
         {query.q.trim() && query.t === 'user' ? (
           <UserStats onError={errorHandler} userName={query.q} period={query.p}></UserStats>
