@@ -9,10 +9,11 @@ import {
 } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryTooltip } from 'victory';
+import handleErrors from '../../utils/handleFetchErrors';
 import { theme } from '../../utils/victoryTheme';
 import './PackageStats.css';
 
-const PackageStats = ({ packageName, period }) => {
+const PackageStats = ({ packageName, period, onError }) => {
   const [loaded, setLoaded] = useState(false);
 
   const [packageData, setPackageData] = useState({
@@ -23,12 +24,16 @@ const PackageStats = ({ packageName, period }) => {
   });
   useEffect(() => {
     fetch(`https://api.npmjs.org/downloads/range/${period}/${packageName}`)
+      .then(handleErrors)
       .then(response => response.json())
       .then(data => {
         setLoaded(true);
         setPackageData(data);
+      })
+      .catch(e => {
+        onError(e);
       });
-  }, [packageName, period]);
+  }, [packageName, period, onError]);
 
   return (
     <div className={'package-stats-wrapper'}>
@@ -66,7 +71,13 @@ const PackageStats = ({ packageName, period }) => {
           </IonCardSubtitle>
           <IonCardTitle>
             {loaded ? (
-              `${packageData.package}`
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`https://www.npmjs.com/package/${packageData.package}`}
+              >
+                {packageData.package}
+              </a>
             ) : (
               <IonSkeletonText animated style={{ width: '90px' }}></IonSkeletonText>
             )}

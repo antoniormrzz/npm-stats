@@ -1,5 +1,5 @@
 import { IonButton, IonCard, IonInput, IonSelect, IonSelectOption } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './Search.css';
 
 const Search: React.FC<{ onSearch }> = ({ onSearch }) => {
@@ -8,14 +8,34 @@ const Search: React.FC<{ onSearch }> = ({ onSearch }) => {
   const [searchType, setSearchType] = useState<string>('user');
   const [searchTime, setSearchTime] = useState<string>('last-week');
 
+  const timeChangeHander = useCallback(() => {
+    if (text.trim()) {
+      onSearch(text, searchType, searchTime);
+    }
+  }, [text, searchType, searchTime, onSearch]);
+
+  const enterHandler = useCallback(
+    event => {
+      if (text.trim() && event.key === 'Enter') {
+        onSearch(text, searchType, searchTime);
+      }
+    },
+    [text, searchType, searchTime, onSearch]
+  );
+
+  useEffect(() => {
+    timeChangeHander();
+  }, [searchTime]);
+
   return (
     <div className="search">
-      <IonCard >
+      <IonCard>
         <div className="search__row">
           <IonInput
             value={text}
             placeholder={placeholder}
             onIonChange={e => setText(e.detail.value!)}
+            onKeyPress={enterHandler}
           ></IonInput>
           <IonButton
             className="search__button"

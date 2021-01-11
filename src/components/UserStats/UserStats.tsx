@@ -10,6 +10,7 @@ import {
   IonProgressBar
 } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
+import handleErrors from '../../utils/handleFetchErrors';
 import PackageStats from '../PackageStats/PackageStats';
 import './UserStats.css';
 
@@ -17,7 +18,7 @@ interface PackageType {
   package: { name: string; scope: string };
 }
 
-const UserStats = ({ userName, period }) => {
+const UserStats = ({ userName, period, onError }) => {
   const [nameTotalLoaded, setNameTotalLoaded] = useState(false);
   const [total, setTotal] = useState(0);
   const [totalDownloads, setTotalDownloads] = useState(0);
@@ -71,6 +72,7 @@ const UserStats = ({ userName, period }) => {
             );
           }
           Promise.all(urlArray.map(u => fetch(u)))
+            .then(responses => Promise.all(responses.map(handleErrors)))
             .then(responses => Promise.all(responses.map(res => res.json())))
             .then(packages => {
               let totalPackages: any[] = [...data.objects];
@@ -79,24 +81,33 @@ const UserStats = ({ userName, period }) => {
               });
               setUserPacks({ objects: totalPackages });
               setUserPacksLoaded(true);
+            })
+            .catch(e => {
+              onError(e);
             });
         }
       }
       setTotal(data.total);
       setNameTotalLoaded(true);
+      setTotalDownloads(0);
+      setTotalDownloadsLoaded(true);
     },
-    [userName]
+    [userName, onError]
   );
 
   useEffect(() => {
     fetch(
       `https://registry.npmjs.com/-/v1/search?text=maintainer:${userName}&size=250&quality=0.0&maintenance=0.0&popularity=1.0&from=0`
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(data => {
         fetchTotalPackages(data);
+      })
+      .catch(e => {
+        onError(e);
       });
-  }, [userName, fetchTotalPackages]);
+  }, [userName, fetchTotalPackages, onError]);
 
   useEffect(() => {
     if (userPacksLoaded) {
@@ -118,6 +129,7 @@ const UserStats = ({ userName, period }) => {
           fetch(`https://api.npmjs.org/downloads/point/${period}/${u.join(',')}`)
         )
       )
+        .then(responses => Promise.all(responses.map(handleErrors)))
         .then(responses => Promise.all(responses.map(res => res.json())))
         .then(downloads => {
           let downloadsSum = downloads
@@ -131,9 +143,12 @@ const UserStats = ({ userName, period }) => {
             }, 0);
           setTotalDownloads(downloadsSum as number);
           setTotalDownloadsLoaded(true);
+        })
+        .catch(e => {
+          onError(e);
         });
     }
-  }, [userPacksLoaded, total, period, userPacks.objects]);
+  }, [userPacksLoaded, total, period, userPacks.objects, onError]);
 
   return (
     <div>
@@ -149,7 +164,9 @@ const UserStats = ({ userName, period }) => {
           </IonCardSubtitle>
           <IonCardTitle>
             {nameTotalLoaded ? (
-              `${userName}`
+              <a target="_blank" rel="noreferrer" href={`https://www.npmjs.com/~${userName}`}>
+                {userName}
+              </a>
             ) : (
               <IonSkeletonText animated style={{ width: '90px' }}></IonSkeletonText>
             )}
@@ -184,7 +201,7 @@ const UserStats = ({ userName, period }) => {
       ) : null}
       <div className={'package-stats-list'}>
         {packagesToShow.map(e => (
-          <PackageStats key={e} packageName={e} period={period}></PackageStats>
+          <PackageStats onError={onError} key={e} packageName={e} period={period}></PackageStats>
         ))}
       </div>
     </div>
