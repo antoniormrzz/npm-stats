@@ -5,7 +5,7 @@ import { Footer } from "./Footer";
 
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -32,6 +32,7 @@ export default function RootLayout({
           <main className="flex-grow flex w-full">{children}</main>
           <Footer />
         </div>
+      <SpeedInsights />
       </body>
     </html>
   );
