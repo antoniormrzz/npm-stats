@@ -31,7 +31,7 @@ export const UserPackageDetails = ({
   const [totalDownloads, setTotalDownloads] = useState(0);
 
   useEffect(() => {
-    fetch(`https://api.npmjs.org/downloads/range/${period}/${name}`)
+    fetch(`https://api.npmjs.org/downloads/range/${period}/${name}`, { next: { revalidate: 600 } })
       .then(handleErrors)
       .then((response) => response.json())
       .then((data) => {

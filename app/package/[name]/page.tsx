@@ -107,6 +107,8 @@ export default async function PackagePage({
     .replace(/\/issues$/, "")
     .replace(/^git\+/, "");
 
+  const homeAddress = metadata.homepage || versionData.homepage || "";
+
   return (
     <div className="flex flex-col lg:flex-row min-h-full w-full">
       <div className="lg:h-full lg:border-r-2 lg:border-r-base-300 lg:bg-base-200 lg:w-80 lg:min-w-80 flex flex-col items-center p-4 lg:pt-8 gap-2">
@@ -125,10 +127,10 @@ export default async function PackagePage({
             <Package className="w-5 h-5" />
             npm
           </a>
-          {(metadata.homepage || versionData.homepage).includes("http") ? (
+          {(homeAddress).includes("http") ? (
             <a
               className="btn bg-yellow-600 hover:bg-yellow-700 btn-sm rounded-full text-white"
-              href={metadata.homepage || versionData.homepage}
+              href={homeAddress}
               target="_blank"
             >
               <House className="w-5 h-5" />
