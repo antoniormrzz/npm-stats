@@ -5,6 +5,8 @@ import { Footer } from "./Footer";
 
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark">
+      <GoogleAnalytics gaId="G-J5LYZMN1XT" />
       <body className={inter.className}>
         <div>
           <Toaster />
