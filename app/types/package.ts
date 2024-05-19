@@ -137,6 +137,8 @@ export type PackageMetadata = {
       };
       /** Shrinkwrap of the version */
       _hasShrinkwrap: boolean;
+      /** readme of the version */
+      readme?: string;
     };
   };
   /** Timestamps for the package */

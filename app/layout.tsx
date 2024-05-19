@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "npm stats By Antonio Ramirez",
-  description: "See npm stats by user or package name",
+  description: "See npm stats by user or package name. Copy install instructions for yarn, npm, and pnpm.",
 };
 
 export default function RootLayout({

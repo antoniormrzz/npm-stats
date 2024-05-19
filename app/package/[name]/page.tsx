@@ -13,10 +13,7 @@ import Link from "next/link";
 import { Metadata, ResolvingMetadata } from "next/types";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import rehypeParse from "rehype-parse";
-import remarkBreaks from "remark-breaks";
 // @ts-ignore
 import * as rehypeUrls from "rehype-urls";
 import rehypeSlug from "rehype-slug";
@@ -107,7 +104,31 @@ export default async function PackagePage({
     .replace(/\/issues$/, "")
     .replace(/^git\+/, "");
 
+  const otherVersions = Object.values(metadata["dist-tags"]).filter(
+    (v) => v !== version
+  );
+
   const homeAddress = metadata.homepage || versionData.homepage || "";
+
+  let readme = metadata.readme || versionData.readme || "";
+  // if no readme, search for .readme in other versions
+  if (!readme) {
+    for (const v of otherVersions) {
+      if (metadata.versions[v].readme) {
+        readme = metadata.versions[v].readme as string;
+        break;
+      }
+    }
+  }
+
+  if (!readme) {
+    // display a link to home address if exists
+    if (homeAddress.includes("http")) {
+      readme = `[Visit homepage](${homeAddress})`;
+    } else {
+      readme = "No readme available";
+    }
+  }
 
   return (
     <div className="flex flex-col lg:flex-row min-h-full w-full">
@@ -127,7 +148,7 @@ export default async function PackagePage({
             <Package className="w-5 h-5" />
             npm
           </a>
-          {(homeAddress).includes("http") ? (
+          {homeAddress.includes("http") ? (
             <a
               className="btn bg-yellow-600 hover:bg-yellow-700 btn-sm rounded-full text-white"
               href={homeAddress}
@@ -177,21 +198,27 @@ export default async function PackagePage({
         <div className="w-full">
           <div role="tablist" className="tabs tabs-lifted mt-4 mx-2 md:w-1/2">
             <Link
-              href={`/package/${urlEncodeText(name)}?period=${periodConst.daily}`}
+              href={`/package/${urlEncodeText(name)}?period=${
+                periodConst.daily
+              }`}
               role="tab"
               className={`tab ${period === periodConst.daily && "tab-active"}`}
             >
               Daily
             </Link>
             <Link
-              href={`/package/${urlEncodeText(name)}?period=${periodConst.weekly}`}
+              href={`/package/${urlEncodeText(name)}?period=${
+                periodConst.weekly
+              }`}
               role="tab"
               className={`tab ${period === periodConst.weekly && "tab-active"}`}
             >
               Weekly
             </Link>
             <Link
-              href={`/package/${urlEncodeText(name)}?period=${periodConst.monthly}`}
+              href={`/package/${urlEncodeText(name)}?period=${
+                periodConst.monthly
+              }`}
               role="tab"
               className={`tab ${
                 period === periodConst.monthly && "tab-active"
@@ -200,7 +227,9 @@ export default async function PackagePage({
               Monthly
             </Link>
             <Link
-              href={`/package/${urlEncodeText(name)}?period=${periodConst.yearly}`}
+              href={`/package/${urlEncodeText(name)}?period=${
+                periodConst.yearly
+              }`}
               role="tab"
               className={`tab ${period === periodConst.yearly && "tab-active"}`}
             >
@@ -250,7 +279,7 @@ export default async function PackagePage({
               }),
             ]}
           >
-            {metadata.readme}
+            {readme}
           </Markdown>
         </div>
       </div>
