@@ -9,6 +9,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col pt-10 items-center">
       <Image
+        priority
         src="/logo.png"
         alt="Explore npm download statistics, copy npm, Yarn, and pnpm installation instructions, and track popular npm packages."
         width={272}
