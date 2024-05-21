@@ -41,26 +41,11 @@ export async function generateMetadata(
   // read route params
   const name = urlDecodeText(params.name);
 
-  let totalDownloads = 0;
-  let metadata = null;
-  let packageData = null;
-  // fetch data
-  try {
-    const packageStats = await getPackageStats(name, periodConst.daily);
-    totalDownloads = packageStats.totalDownloads;
-    metadata = packageStats.metadata;
-    packageData = packageStats.packageData;
-  } catch (e) {
-    totalDownloads = 0;
-    metadata = null;
-    packageData = null;
-  }
-
   return {
-    title: `${name} npm stats`,
+    title: `npm Download Statistics for ${name} | Install ${name} as dev dependency or globally`,
     description:
-      metadata?.description ||
-      `See npm download statistics for the package ${name}`,
+      `Discover detailed npm download statistics and insights for Package ${name}.
+      Learn how to install and remove Package ${name} using npm, Yarn, and pnpm.`,
   };
 }
 

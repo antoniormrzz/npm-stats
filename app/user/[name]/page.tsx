@@ -25,10 +25,11 @@ export async function generateMetadata(
   const name = urlDecodeText(params.name);
 
   return {
-    title: `${name}`,
+    title: `User ${name}'s npm Packages & Download Stats | npm stats info`,
     description:
-      `See npm download statistics for user ${name}`,
-    
+      `View comprehensive npm download statistics and package information for User ${name}. 
+      Analyze trends, track popular npm packages, and access detailed usage insights.
+      Get installation and removal instructions for npm, Yarn, and pnpm.`,
   };
 }
 

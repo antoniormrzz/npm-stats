@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { popularPackages } from "./utils/npmrank";
 import { urlEncodeText } from "./utils/urlEncodeDecode";
+import { popularUsers } from "./utils/npmusers";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 
@@ -15,19 +16,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `https://www.npmstats.info/package/${urlEncodeText(name)}?period=last-month`,
       lastModified: new Date(),
       changeFrequency: "monthly" as any,
+      priority: 0.7,
+    })),
+    ...popularUsers.map((name) => ({
+      url: `https://www.npmstats.info/user/${urlEncodeText(name)}?period=last-month`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as any,
       priority: 0.8,
     })),
-    {
-      url: "https://www.npmstats.info/user/sindresorhus?period=last-month",
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.5,
-    },
     {
       url: "https://www.npmstats.info/user/antoniormrzz?period=last-month",
       lastModified: new Date(),
       changeFrequency: "daily",
-      priority: 0.5,
+      priority: 0.8,
     },
     {
       url: "https://www.npmstats.info/about",
